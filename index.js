@@ -1,10 +1,16 @@
-module.exports = function convert(seconds) {
-  const convertedTime = convertSeconds(seconds);
-  const timeStrings = getStrings(convertedTime, 2); // only include 2 units of time
-  const timeString = applyDelimiters(timeStrings);
-
-  return timeString;
-};
+function truncateUnits(convertedTime, unitsToInclude) {
+  // loop through convertedTime objects until value is not 0
+  // add keep adding units while result is less than unitsToInclude
+  const relevantTime = convertedTime.reduce((result, time) => {
+    if (time.value) {
+      if (result.length < unitsToInclude) {
+        result.push(time);
+      }
+    }
+    return result;
+  }, []);
+  return relevantTime;
+}
 
 function convertSeconds(seconds) {
   const MINSINADAY = 60 * 24;
@@ -38,11 +44,14 @@ function convertSeconds(seconds) {
 }
 
 function getStrings(convertedTime, unitsToInclude = convertedTime.length) {
-  if (unitsToInclude != unitsToInclude.length) {
+  let relevantTime = [];
+  if (unitsToInclude !== convertedTime.length) {
     relevantTime = truncateUnits(convertedTime, unitsToInclude);
+  } else {
+    relevantTime = convertedTime;
   }
 
-  timeStrings = relevantTime.reduce((result, time) => {
+  const timeStrings = relevantTime.reduce((result, time) => {
     if (time.value) {
       if (time.value > 1) {
         result.push(`${time.value} ${time.unit}s`);
@@ -55,24 +64,10 @@ function getStrings(convertedTime, unitsToInclude = convertedTime.length) {
   return timeStrings;
 }
 
-function truncateUnits(convertedTime, unitsToInclude) {
-  // loop through convertedTime objects until value is not 0
-  // add keep adding units while result is less than unitsToInclude
-  relevantTime = convertedTime.reduce((result, time) => {
-    if (time.value) {
-      if (result.length < unitsToInclude) {
-        result.push(time);
-      }
-    }
-    return result;
-  }, []);
-  return relevantTime;
-}
-
 function applyDelimiters(timeStrings) {
   let timeString = "";
 
-  for (var i = 0; i < timeStrings.length; i++) {
+  for (let i = 0; i < timeStrings.length; i++) {
     if (i < timeStrings.length - 2) {
       timeString += `${timeStrings[i]}, `;
     } else if (i === timeStrings.length - 2) {
@@ -83,3 +78,20 @@ function applyDelimiters(timeStrings) {
   }
   return timeString;
 }
+
+module.exports = function convert(seconds, units) {
+  if (typeof seconds !== "number") {
+    throw new Error("Expected seconds argument to be a number");
+  }
+  const convertedTime = convertSeconds(seconds);
+  let unitsToInclude = 0;
+  if (units) {
+    unitsToInclude = units;
+  } else {
+    unitsToInclude = convertedTime.length;
+  }
+  const timeStrings = getStrings(convertedTime, unitsToInclude);
+  const timeString = applyDelimiters(timeStrings);
+
+  return timeString;
+};
