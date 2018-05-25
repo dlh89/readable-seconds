@@ -12,7 +12,7 @@ $ npm install readable-seconds --save
 
 ### Basic Usage
 
-If a second argument is not provided then it will return all units.
+If a second argument is not provided then all units are returned.
 
 ```javascript
 const readableSeconds = require("readable-seconds");
@@ -20,7 +20,7 @@ const readableSeconds = require("readable-seconds");
 console.log(readableSeconds(3690)); // 1 hour, 1 minute and 30 seconds
 ```
 
-### Using optional second argument to limit the number of units returned
+### Limiting the number of units returned
 
 An optional second argument can be used to limit the maximum number of units returned.
 
