@@ -2,6 +2,15 @@
   "name": "readable-seconds",
   "version": "1.1.0",
   "description": "Convert seconds into human-readable time.",
+  "keywords": [
+    "convert",
+    "seconds",
+    "human",
+    "readable",
+    "time",
+    "units",
+    "english"
+  ],
   "main": "index.js",
   "scripts": {
     "test": "node index.test.js",
