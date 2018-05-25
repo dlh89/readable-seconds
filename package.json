@@ -1,0 +1,11 @@
+{
+  "name": "readable-seconds",
+  "version": "1.0.0",
+  "description": "Convert seconds into human-readable time.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "David Hide",
+  "license": "MIT"
+}
